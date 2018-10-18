@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+
+<ModulePrefs title="" width="600" height="600"/>
+
+<Content type="html">
+
+<script type="text/JavaScript">
+
+	var theta = 31;
+
+	var MyCanvas;
+	var ConMode;
+	var RotateState = false;
+
+	var Img = document.createElement('img');
+	Img.src = "img/img1.png";
+
+	var ImgWidth = 600;
+	var ImgHeight = 600;
+
+	onload = function() {
+
+		MyCanvas = document.getElementById("DrawField");
+		MyCanvas.setAttribute('width', ImgWidth);
+		MyCanvas.setAttribute('height', ImgHeight);
+
+ 		ConMode = MyCanvas.getContext('2d');
+		ConMode.translate(MyCanvas.width/2, MyCanvas.height/2);
+		ConMode.drawImage(Img, -ImgWidth/2, -ImgHeight/2, ImgWidth, ImgHeight);
+
+	};
+
+	function RotateView(){
+		if(!RotateState){
+			RotateState = true;
+			DoRotate();
+		}
+	}
+
+	function DoRotate(){
+
+		if (!RotateState){
+			return;
+		}else{
+			ConMode.clearRect(-ImgWidth/2,-ImgHeight/2,ImgWidth,ImgHeight);
+			ConMode.rotate(theta * Math.PI / 180);
+			ConMode.drawImage(Img, -ImgWidth/2, -ImgHeight/2, ImgWidth, ImgHeight);
+			setTimeout(function(){DoRotate()}, theta);
+		}
+	}
+
+	function StopRotate(){
+
+		RotateState = false;
+	}
+
+</script>
+
+<form>
+	<p>
+		<image src = "img/img.png" style = "zoom:0.6; position: absolute; ">
+	</p>
+	<br>
+	<canvas id="DrawField"></canvas>
+	<br>
+    <input id= "Rotation" type=button value="start" onClick="RotateView()" style="position:absolute; left:200px;width:100px;">
+    <input id= "Stop" type=button value="stop" onClick="StopRotate()" style="position:absolute; left:310px;width:100px;">
+    <br>
+</form>
+
+</Content>
+
+</Module>
